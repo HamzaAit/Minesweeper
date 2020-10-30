@@ -63,13 +63,19 @@ function Grid(rows, cols, r, cellsize) {
         x = floor(mouseX / this.cellsize);
         y = floor(mouseY / this.cellsize);
         if (y >= 0 && y < this.rows && x >= 0 && x < this.cols) {
-            this.matrix[y][x].reveal();
-            if (this.matrix[y][x].neighborBombs == 0) {
-                this.recursivereveal(y, x);
+            if (mouseButton == LEFT && !this.matrix[y][x].flagged) {
+                this.matrix[y][x].reveal();
+                if (this.matrix[y][x].neighborBombs == 0) {
+                    this.recursivereveal(y, x);
+                }
+                if (this.matrix[y][x].hasBomb == true) {
+                    this.gameOver = true;
+                    this.revealAllBombs();
+                }
             }
-            if (this.matrix[y][x].hasBomb == true) {
-                this.gameOver = true;
-                this.revealAllBombs();
+            else if (mouseButton == CENTER){
+                this.matrix[y][x].flag();
+
             }
         }
     }

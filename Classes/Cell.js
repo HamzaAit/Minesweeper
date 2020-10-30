@@ -5,6 +5,7 @@ function Cell(i, j, cellsize) {
     this.cellsize = cellsize;
     this.neighborBombs = 0;
     this.revealed = false;
+    this.flagged = false;
 
     this.draw = function () {
         stroke(0);
@@ -15,9 +16,13 @@ function Cell(i, j, cellsize) {
         else if (!this.revealed) fill(93, 0, 255);
         else if (this.revealed && !this.hasBomb) fill(183, 225, 252);
         square(this.j * this.cellsize, this.i * this.cellsize, this.cellsize);
-        if (this.hasBomb && this.revealed){
+        if (this.hasBomb && this.revealed) {
             // align(CENTER, CENTER);
-            image(bombimg, this.j * this.cellsize + this.cellsize / 4, (this.i) * this.cellsize + this.cellsize/ 4, this.cellsize/1.5, this.cellsize/1.5);
+            image(bombimg, this.j * this.cellsize + this.cellsize / 4, (this.i) * this.cellsize + this.cellsize / 4, this.cellsize / 1.5, this.cellsize / 1.5);
+        }
+        if (this.flagged) {
+            image(flagimg, this.j * (this.cellsize + 0.2), this.i * (this.cellsize + 0.2), this.cellsize / 1.5, this.cellsize / 1.5);
+
         }
         if (this.revealed && !this.hasBomb) {
             fill(0);
@@ -29,6 +34,14 @@ function Cell(i, j, cellsize) {
     }
 
     this.reveal = function () {
-        this.revealed = true;
+        if (this.flagged == false) {
+            this.revealed = true;
+        }
+    }
+
+    this.flag = function () {
+        if (this.revealed == false) {
+            this.flagged = true;
+        }
     }
 }
