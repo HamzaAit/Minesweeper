@@ -40,8 +40,13 @@ function Cell(i, j, cellsize) {
     }
 
     this.flag = function () {
-        if (this.revealed == false) {
+        if (this.revealed == false && this.flagged == false) {
             this.flagged = true;
         }
+        else if (this.flagged) {
+            this.flagged = false;
+        }
     }
+
+
 }

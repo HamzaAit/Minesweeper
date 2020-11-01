@@ -4,6 +4,10 @@ function Grid(rows, cols, r, cellsize) {
     this.cellsize = cellsize;
     this.matrix = [];
     this.gameOver = false;
+    this.gameWon = false;
+    this.bombs = 0;
+    this.cells = this.rows + this.cols;
+    this.revealedcells = 0;
 
     this.generate = function () {
         // make rows
@@ -19,6 +23,7 @@ function Grid(rows, cols, r, cellsize) {
                 let currentcell = new Cell(i, j, this.cellsize);
                 if (random() < r) {
                     currentcell.hasBomb = true;
+                    this.bombs += 1;
                 }
                 else {
                     currentcell.hasBomb = false;
@@ -65,6 +70,7 @@ function Grid(rows, cols, r, cellsize) {
         if (y >= 0 && y < this.rows && x >= 0 && x < this.cols) {
             if (mouseButton == LEFT && !this.matrix[y][x].flagged) {
                 this.matrix[y][x].reveal();
+                this.revealedcells += 1;
                 if (this.matrix[y][x].neighborBombs == 0) {
                     this.recursivereveal(y, x);
                 }
@@ -73,10 +79,13 @@ function Grid(rows, cols, r, cellsize) {
                     this.revealAllBombs();
                 }
             }
-            else if (mouseButton == CENTER){
+            else if (mouseButton == RIGHT){
                 this.matrix[y][x].flag();
 
             }
+        }
+        if(this.bombs == this.rows * this.cols - this.revealedcells && ! this.gameOver){
+            this.gameWon = true;
         }
     }
 
